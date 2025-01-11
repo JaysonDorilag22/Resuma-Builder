@@ -17,7 +17,9 @@ import {
   Award,
   FolderGit2,
   Lightbulb,
+  Users
 } from "lucide-react"
+import ReferenceForm from "./components/resume-sections/ReferenceForm"
 
 export default function ResumeForm({ data, onUpdate }) {
   const updateResumeData = (section, sectionData) => {
@@ -48,7 +50,7 @@ export default function ResumeForm({ data, onUpdate }) {
       title: "Experience",
       icon: Briefcase,
       component: ExperienceForm,
-      prev: "skills",
+      prev: "skills", 
       next: "education"
     },
     {
@@ -72,44 +74,51 @@ export default function ResumeForm({ data, onUpdate }) {
       title: "Projects",
       icon: FolderGit2,
       component: ProjectsForm,
-      prev: "certifications"
+      prev: "certifications",
+      next: "references" // Add next link to references
     },
-  ]
+    {
+      id: "references",
+      title: "References",
+      icon: Users,
+      component: ReferenceForm,
+      prev: "projects"
+    }
+]
 
   return (
-    <div className=" p-5  border border-dashed">
-      <Tabs defaultValue="personal-info" className="w-full">
-        <TabsList className="flex justify-between w-full py-5">
-          {sections.map(({ id, title, icon: Icon }) => (
-            <TabsTrigger
-              key={id}
-              value={id}
-              className="flex-1 flex items-center justify-center gap-2 py-2"
-            >
-              <Icon className="w-4 h-4" />
-              <span className="hidden sm:inline">{title}</span>
-            </TabsTrigger>
-          ))}
-        </TabsList>
-
-        {sections.map(({ id, title, component: Component}) => (
-          <TabsContent key={id} value={id}>
-            <div className="space-y-4">
-              <div>
-                <h2 className="text-xl font-semibold">{title}</h2>
-                <p className="text-muted-foreground">
-                  Fill in your {title.toLowerCase()} details below.
-                </p>
-              </div>
-              
-              <Component
-                data={data[id]}
-                updateData={(sectionData) => updateResumeData(id, sectionData)}
-              />
-            </div>
-          </TabsContent>
+    <div className="p-5 border border-dashed">
+    <Tabs defaultValue="personal-info" className="w-full">
+      <TabsList className="flex justify-between w-full py-5">
+        {sections.map(({ id, icon: Icon }) => (
+          <TabsTrigger
+            key={id}
+            value={id}
+            className="flex-1 flex items-center justify-center p-2"
+          >
+            <Icon className="w-5 h-5" />
+          </TabsTrigger>
         ))}
-      </Tabs>
-    </div>
+      </TabsList>
+
+      {sections.map(({ id, title, component: Component}) => (
+        <TabsContent key={id} value={id}>
+          <div className="space-y-4">
+            <div>
+              <h2 className="text-xl font-semibold">{title}</h2>
+              <p className="text-muted-foreground">
+                Fill in your {title.toLowerCase()} details below.
+              </p>
+            </div>
+            
+            <Component
+              data={data[id]}
+              updateData={(sectionData) => updateResumeData(id, sectionData)}
+            />
+          </div>
+        </TabsContent>
+      ))}
+    </Tabs>
+  </div>
   )
 }

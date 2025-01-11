@@ -19,6 +19,7 @@ export function PreviewControls({
   educations,
   certifications,
   projects,
+  references,
 }) {
   const hasContent = (section) => {
     if (!section) return false;
@@ -48,15 +49,25 @@ export function PreviewControls({
     });
   };
 
-  const separator = new Paragraph({
-    children: [
-      new TextRun({
-        text: "________________________________________________________________________________________________________",
-        color: "E8E7E6",
-      }),
-    ],
-    spacing: { before: 0, after: 50 },
-  });
+  const separator = fontFamily === "Times New Roman"
+    ? new Paragraph({
+        children: [
+          new TextRun({
+            text: "________________________________________________________________________________________________________",
+            color: "E8E7E6",
+          }),
+        ],
+        spacing: { before: 0, after: 50 },
+      })
+    : new Paragraph({
+        children: [
+          new TextRun({
+            text: "______________________________________________________________________________________________",
+            color: "E8E7E6",
+          }),
+        ],
+        spacing: { before: 0, after: 50 },
+      });
 
   const exportToWord = async () => {
     try {
@@ -66,7 +77,7 @@ export function PreviewControls({
       if (personalInfo?.fullName?.trim()) {
         children.push(
           new Paragraph({
-            alignment: "center",
+            alignment: "left",
             children: [
               new TextRun({
                 text: personalInfo.fullName,
@@ -90,7 +101,7 @@ export function PreviewControls({
         if (contactInfo.length > 0) {
           children.push(
             new Paragraph({
-              alignment: "center",
+              alignment: "left",
               children: [
                 new TextRun({
                   text: contactInfo.join("  |  "),
@@ -438,41 +449,99 @@ export function PreviewControls({
         });
       }
 
+      if (hasContent(references)) {
+        children.push(createHeading("References"));
+        children.push(separator);
+        references.forEach((ref, index) => {
+          // Reference Name
+          children.push(
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: ref.name || "",
+                  bold: true,
+                  size: 24,
+                  color: "000000",
+                  font: fontFamily,
+                }),
+              ],
+            })
+          );
+  
+          // Reference Job Title and Company
+          if (ref.jobTitle || ref.company) {
+            children.push(
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: ref.jobTitle ? `${ref.jobTitle}` : "",
+                    size: 24,
+                    color: "000000",
+                    font: fontFamily,
+                  }),
+                  ref.company ? new TextRun({ text: ` at ${ref.company}`, size: 24, color: "000000", font: fontFamily }) : null,
+                ],
+              })
+            );
+          }
+  
+          // Reference Contact Info (Email and Phone)
+          const contactInfo = [];
+          if (ref.email) contactInfo.push(ref.email);
+          if (ref.phone) contactInfo.push(ref.phone);
+          if (contactInfo.length > 0) {
+            children.push(
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: contactInfo.join(" | "),
+                    size: 24,
+                    color: "000000",
+                    font: fontFamily,
+                  }),
+                ],
+                spacing: { after: index === references.length - 1 ? 200 : 100 },
+              })
+            );
+          }
+        });
+      }
+
       // Update Document configuration
-      const doc = new Document({
-        sections: [
-          {
-            properties: {
-              page: {
-                margin: {
-                  top: "1.27cm",
-                  right: "1.27cm",
-                  bottom: "1.27cm",
-                  left: "1.27cm",
-                },
+     // Update Document configuration
+    const doc = new Document({
+      sections: [
+        {
+          properties: {
+            page: {
+              margin: {
+                top: "1.27cm",
+                right: "1.27cm",
+                bottom: "1.27cm",
+                left: "1.27cm",
               },
             },
-            children: children,
           },
-        ],
-        styles: {
-          default: {
-            document: {
-              run: {
-                font: fontFamily,
-              },
+          children: children,
+        },
+      ],
+      styles: {
+        default: {
+          document: {
+            run: {
+              font: fontFamily,
             },
           },
         },
-      });
+      },
+    });
 
-      const blob = await Packer.toBlob(doc);
-      saveAs(blob, "resume.docx");
-    } catch (error) {
-      console.error("Error creating Word document:", error);
-    }
-  };
-
+    const blob = await Packer.toBlob(doc);
+    saveAs(blob, "resume.docx");
+  } catch (error) {
+    console.error("Error creating Word document:", error);
+  }
+};
   return (
     <div className="mb-4 flex justify-between items-center sticky top-0 bg-background z-10 py-2">
       <div className="flex items-center gap-4">

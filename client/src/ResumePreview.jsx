@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export default function ResumePreview({ data }) {
   const [fontFamily, setFontFamily] = useState("Arial");
-
+  const children = [];
   const hasContent = (section) => {
     if (!section) return false;
     if (Array.isArray(section)) {
@@ -23,6 +23,7 @@ export default function ResumePreview({ data }) {
   const educations = data?.education?.educations || [];
   const certifications = data?.certifications?.certifications || [];
   const projects = data?.projects?.projects || [];
+  const references = data?.references?.references || [];
 
   const pageStyle = {
     width: "105mm", // 50% of A4 width
@@ -69,6 +70,7 @@ export default function ResumePreview({ data }) {
         educations={educations}
         certifications={certifications}
         projects={projects}
+        references={references}
       />
 
       <div className="flex justify-center overflow-hidden">
@@ -76,7 +78,7 @@ export default function ResumePreview({ data }) {
           <div style={contentStyle}>
             {/* Personal Info Section */}
             {hasContent(personalInfo) && (
-              <div className="text-center mb-1 border-b pb-3">
+              <div className="text-left mb-1 border-b pb-3">
                 <h1 style={nameStyle}>{personalInfo.fullName}</h1>
                 <div
                   style={bodyStyle}
@@ -111,7 +113,9 @@ export default function ResumePreview({ data }) {
                 <h2 style={headerStyle} className="border-b">
                   Professional Summary
                 </h2>
-                <p style={bodyStyle} className="text-justify">{personalInfo.summary}</p>
+                <p style={bodyStyle} className="text-justify">
+                  {personalInfo.summary}
+                </p>
               </div>
             )}
 
@@ -131,7 +135,9 @@ export default function ResumePreview({ data }) {
                     <h2 style={headerStyle} className="border-b mb-2">
                       Soft Skills
                     </h2>
-                    <p style={bodyStyle} className="text-justify">{skills.softSkills}</p>
+                    <p style={bodyStyle} className="text-justify">
+                      {skills.softSkills}
+                    </p>
                   </div>
                 )}
               </div>
@@ -236,6 +242,30 @@ export default function ResumePreview({ data }) {
                         {cert.description}
                       </p>
                     )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* References Section */}
+            {hasContent(references) && (
+              <div className="mb-3">
+                <h2 style={headerStyle} className="border-b mb-2">
+                  References
+                </h2>
+                {references.map((ref, index) => (
+                  <div key={index} className="mb-3">
+                    <div style={bodyStyle}>
+                      <h3 className="font-medium">{ref.name}</h3>
+                      <div className="text-muted-foreground">
+                        {ref.jobTitle} {ref.company && `at ${ref.company}`}
+                      </div>
+                      <div>
+                        {ref.email && <span>{ref.email}</span>}
+                        {ref.email && ref.phone && <span> | </span>}
+                        {ref.phone && <span>{ref.phone}</span>}
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
