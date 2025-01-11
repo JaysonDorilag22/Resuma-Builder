@@ -26,38 +26,40 @@ export default function ResumePreview({ data }) {
   const references = data?.references?.references || [];
 
   const pageStyle = {
-    width: "105mm", // 50% of A4 width
-    height: "148.5mm", // 50% of A4 height
+    width: "210mm", // Full A4 width
+    height: "297mm", // Full A4 height
     fontFamily,
-    transform: "scale(0.9)", // Slight scaling for layout adjustments
+    transform: "scale(1)", // Set to 100% for now; you can scale up if needed
     transformOrigin: "top center",
     margin: "0 auto",
     border: "2px solid hsl(var(--border))",
   };
-
+  
   const contentStyle = {
-    width: "100%",
-    height: "100%",
-    padding: "8mm",
+    width: "184.6mm", // Width adjusted for 1.27cm margins
+    height: "271.6mm", // Height adjusted for 1.27cm margins
+    padding: "12.7mm", // Set padding to match the Word margin
+    boxSizing: "border-box", // Ensure padding is included in dimensions
   };
-
-  // Adjusted font sizes proportionally for the scaled-down A4
+  
+  // Adjusted font sizes for better readability at A4 size
   const headerStyle = {
-    fontSize: "7.5pt", // Reduced from 9pt
+    fontSize: "12pt", // Standard readable font size
     fontWeight: "bold",
-    marginBottom: "1.5mm", // Reduced from 2mm
+    marginBottom: "2mm",
   };
-
+  
   const bodyStyle = {
-    fontSize: "5.5pt", // Reduced from 8pt
-    lineHeight: "1.4", // Keeping line height unchanged for readability
+    fontSize: "10pt", // Standard body font size
+    lineHeight: "1.5", // Keep a readable line height
   };
-
+  
   const nameStyle = {
-    fontSize: "8.5pt", // Reduced from 10pt
+    fontSize: "14pt", // Larger for the name
     fontWeight: "bold",
-    marginBottom: "1.5mm", // Reduced from 2mm
+    marginBottom: "2mm",
   };
+  
 
   return (
     <div>
@@ -82,7 +84,7 @@ export default function ResumePreview({ data }) {
                 <h1 style={nameStyle}>{personalInfo.fullName}</h1>
                 <div
                   style={bodyStyle}
-                  className="text-muted-foreground space-x-2"
+                  className=" space-x-2"
                 >
                   {personalInfo.email && <span>{personalInfo.email}</span>}
                   {personalInfo.phone && (
