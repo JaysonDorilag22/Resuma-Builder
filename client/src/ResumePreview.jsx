@@ -25,39 +25,72 @@ export default function ResumePreview({ data }) {
   const projects = data?.projects?.projects || [];
   const references = data?.references?.references || [];
 
+  const getResponsiveScale = () => {
+    // Calculate scale based on viewport width
+    const pageWidth = 210; // mm
+    const viewportWidth = window.innerWidth;
+    const scale = Math.min((viewportWidth - 32) / pageWidth, 1);
+    return scale;
+  };
+  
   const pageStyle = {
-    width: "210mm", // Full A4 width
-    height: "297mm", // Full A4 height
+    width: "210mm",
+    minHeight: "297mm",
     fontFamily,
-    transform: "scale(1)", // Set to 100% for now; you can scale up if needed
+    transform: `scale(${getResponsiveScale()})`,
     transformOrigin: "top center",
     margin: "0 auto",
     border: "2px solid hsl(var(--border))",
+    "@media screen and (max-width: 768px)": {
+      width: "100%",
+      transform: "scale(1)",
+      border: "none",
+    },
+    "@media print": {
+      width: "210mm",
+      height: "297mm",
+      transform: "scale(1)",
+    },
   };
   
   const contentStyle = {
-    width: "184.6mm", // Width adjusted for 1.27cm margins
-    height: "271.6mm", // Height adjusted for 1.27cm margins
-    padding: "12.7mm", // Set padding to match the Word margin
-    boxSizing: "border-box", // Ensure padding is included in dimensions
+    width: "100%",
+    maxWidth: "184.6mm",
+    minHeight: "271.6mm",
+    padding: "clamp(1rem, 3vw, 12.7mm)",
+    boxSizing: "border-box",
+    margin: "0 auto",
+    "@media screen and (max-width: 768px)": {
+      padding: "1rem",
+    },
   };
   
-  // Adjusted font sizes for better readability at A4 size
   const headerStyle = {
-    fontSize: "12pt", // Standard readable font size
+    fontSize: "clamp(1rem, 2vw, 12pt)",
     fontWeight: "bold",
-    marginBottom: "2mm",
+    marginBottom: "clamp(0.5rem, 1vw, 2mm)",
   };
   
   const bodyStyle = {
-    fontSize: "10pt", // Standard body font size
-    lineHeight: "1.5", // Keep a readable line height
+    fontSize: "clamp(0.875rem, 1.5vw, 10pt)",
+    lineHeight: "1.5",
   };
   
   const nameStyle = {
-    fontSize: "14pt", // Larger for the name
+    fontSize: "clamp(1.25rem, 2.5vw, 14pt)",
     fontWeight: "bold",
-    marginBottom: "2mm",
+    marginBottom: "clamp(0.5rem, 1vw, 2mm)",
+  };
+  
+  // Add responsive container
+  const containerStyle = {
+    width: "100%",
+    maxWidth: "1200px",
+    margin: "0 auto",
+    padding: "1rem",
+    "@media screen and (max-width: 768px)": {
+      padding: "0.5rem",
+    },
   };
   
 
