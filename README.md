@@ -20,9 +20,6 @@ The **Resume Builder** application is a fast and intuitive tool that enables use
 - **Export Options**  
   Users can download their resumes in PDF, Word, or plain text formats, making it easy to share or print.
 
-- **Offline Accessibility**  
-  Fully functional without the need for an internet connection, ensuring users can work on their resumes anytime, anywhere.
-
 - **Local Data Storage**  
   Stores resume data locally on the user’s device using browser storage technologies such as LocalStorage or IndexedDB, ensuring data privacy.
 
