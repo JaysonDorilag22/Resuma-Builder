@@ -41,6 +41,7 @@ export function PreviewControls({
           bold: true,
           size: 28,
           color: "000000",
+          font: fontFamily, // Add font
         }),
       ],
       spacing: { before: 200, after: 50 },
@@ -72,6 +73,7 @@ export function PreviewControls({
                 bold: true,
                 size: 32,
                 color: "000000",
+                font: fontFamily,
               }),
             ],
             spacing: { after: 50 },
@@ -94,6 +96,7 @@ export function PreviewControls({
                   text: contactInfo.join("  |  "),
                   size: 24,
                   color: "000000",
+                  font: fontFamily,
                 }),
               ],
               spacing: { after: 50 },
@@ -114,6 +117,7 @@ export function PreviewControls({
                 text: personalInfo.summary,
                 size: 24,
                 color: "000000",
+                font: fontFamily,
               }),
             ],
             spacing: { after: 300 },
@@ -132,6 +136,7 @@ export function PreviewControls({
                 text: skills.technicalSkills,
                 size: 24,
                 color: "000000",
+                font: fontFamily,
               }),
             ],
             spacing: { after: 300 },
@@ -150,6 +155,7 @@ export function PreviewControls({
                 text: skills.softSkills,
                 size: 24,
                 color: "000000",
+                font: fontFamily,
               }),
             ],
             spacing: { after: 300 },
@@ -175,6 +181,7 @@ export function PreviewControls({
                       }`,
                       size: 24,
                       color: "000000",
+                      font: fontFamily,
                     }),
                   ],
                 })
@@ -189,6 +196,7 @@ export function PreviewControls({
                     bold: true,
                     size: 24,
                     color: "000000",
+                    font: fontFamily,
                   }),
                 ],
               })
@@ -204,6 +212,7 @@ export function PreviewControls({
                       }`,
                       size: 24,
                       color: "000000",
+                      font: fontFamily,
                     }),
                   ],
                 })
@@ -218,6 +227,7 @@ export function PreviewControls({
                       text: exp.responsibilities,
                       size: 24,
                       color: "000000",
+                      font: fontFamily,
                     }),
                   ],
                   spacing: {
@@ -243,6 +253,7 @@ export function PreviewControls({
                   bold: true,
                   size: 24,
                   color: "000000",
+                  font: fontFamily,
                 }),
                 new TextRun({
                   text: "\t",
@@ -272,6 +283,7 @@ export function PreviewControls({
                     text: edu.school,
                     size: 24,
                     color: "000000",
+                    font: fontFamily,
                   }),
                 ],
               })
@@ -286,6 +298,7 @@ export function PreviewControls({
                     text: edu.coursework,
                     size: 24,
                     color: "000000",
+                    font: fontFamily,
                   }),
                 ],
                 spacing: { after: index === educations.length - 1 ? 200 : 100 },
@@ -370,6 +383,7 @@ export function PreviewControls({
                   bold: true,
                   size: 24,
                   color: "000000",
+                  font: fontFamily,
                 }),
                 new TextRun({
                   text: "\t",
@@ -397,6 +411,7 @@ export function PreviewControls({
                     text: cert.issuingOrganization,
                     size: 24,
                     color: "000000",
+                    font: fontFamily,
                   }),
                 ],
               })
@@ -411,6 +426,7 @@ export function PreviewControls({
                     text: cert.description,
                     size: 24,
                     color: "000000",
+                    font: fontFamily,
                   }),
                 ],
                 spacing: {
@@ -422,6 +438,7 @@ export function PreviewControls({
         });
       }
 
+      // Update Document configuration
       const doc = new Document({
         sections: [
           {
@@ -438,6 +455,15 @@ export function PreviewControls({
             children: children,
           },
         ],
+        styles: {
+          default: {
+            document: {
+              run: {
+                font: fontFamily,
+              },
+            },
+          },
+        },
       });
 
       const blob = await Packer.toBlob(doc);
